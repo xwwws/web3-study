@@ -15,14 +15,16 @@ export const Home = () => {
     const balance = await web3.eth.getBalance(accounts[0])
     console.log(balance)
   }
-  const handleSetStudent = () => {
-    contract.methods.setPerson(name,age * 1).send({from : accounts[0]})
-  }
   
   const handleGetStudent = async () => {
     const res = await contract.methods.getPersonList().call()
     console.log(res)
     setpersons(res)
+  }
+  
+  const handleSetStudent = async () => {
+    await contract.methods.setPerson(name,age * 1).send({from : accounts[0]})
+    handleGetStudent()
   }
   
   useEffect(() => {
@@ -40,6 +42,8 @@ export const Home = () => {
             name: {item.name}
             <br/>
             age: {item.age}
+            <br/>
+            user: {item.account}
 
         </li>
       })}
