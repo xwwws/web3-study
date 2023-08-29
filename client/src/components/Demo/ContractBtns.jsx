@@ -7,7 +7,7 @@ function ContractBtns({ setValue }) {
 
   const handleInputChange = e => {
     if (/^\d+$|^$/.test(e.target.value)) {
-      setInputValue(e.target.value);
+      setInputValue(e.target.value)
     }
   };
 

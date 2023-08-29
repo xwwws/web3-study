@@ -7,6 +7,8 @@
     "start": "webpack serve"
   },
   "dependencies": {
+    "@types/antd": "^1.0.0",
+    "antd": "^5.8.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "web3": "^1.8.2"
