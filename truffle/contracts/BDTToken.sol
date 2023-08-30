@@ -51,9 +51,9 @@ contract BDTToken {
         // msg.sender  当前网页登录账号
         // _spender 交易所合约地址
         require(_spender != address(0));
-        require(balanceOf(msg.sender) > _value);
+        require(balanceOf[msg.sender] > _value);
         allowance[msg.sender][_spender] = _value;
-        emit Approval(msg.sender, _spender, _vlaue);
+        emit Approval(msg.sender, _spender, _value);
         return true;
     }
 
@@ -66,10 +66,10 @@ contract BDTToken {
         // msg.sender 交易所
         require(_to != address(0));
         require(_from != address(0));
-        require(balanceOf(_form) >=  _value);
-        require(allowance[_form][msg.sender] >=  _value);
+        require(balanceOf[_from] >=  _value);
+        require(allowance[_from][msg.sender] >=  _value);
         // 该用户给交易所授权的额度减少_value
-        allowance[_form][msg.sender] = allowance[_form][msg.sender].sub(_value);
+        allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);
         _transfer(_from, _to, _value);
         return true;
     }

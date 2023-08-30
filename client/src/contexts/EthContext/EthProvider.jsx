@@ -5,8 +5,8 @@ import { reducer, actions, initialState } from "./state";
 // import SimpleStorageContract from './../../contracts/SimpleStorage.json'
 // import PersonListStorageContract from './../../contracts/PersonListStorage.json'
 // import StudentStorageContract from './../../contracts/StudentStorage.json'
-// import ETHTokenContract from './../../contracts/ETHToken.json'
 import BDTToken from './../../contracts/BDTToken.json'
+import Exchange from './../../contracts/Exchange.json'
 
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -17,11 +17,15 @@ function EthProvider({ children }) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
-        const { abi } = artifact;
-        let address, contract;
+        let BDTTokenAddress, ExchangeAddress, contract;
         try {
-          address = artifact.networks[networkID].address;
-          contract = new web3.eth.Contract(abi, address);
+
+          BDTTokenAddress = artifact.BDTToken.networks[networkID].address;
+          ExchangeAddress = artifact.BDTToken.networks[networkID].address;
+          contract = {
+            BDTToken: new web3.eth.Contract(artifact.BDTToken.abi, BDTTokenAddress),
+            Exchange: new web3.eth.Contract(artifact.Exchange.abi, ExchangeAddress),
+          };
         } catch (err) {
           console.error(err);
         }
@@ -35,7 +39,10 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = BDTToken;
+        const artifact = {
+          BDTToken,
+          Exchange
+        };
         init(artifact);
       } catch (err) {
         console.error(err);

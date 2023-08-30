@@ -3,25 +3,27 @@ import { Button, Form, Input, Select } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
 import Web3 from "web3";
-
 const AccountBox = styled.div`
   padding-top: 20px;
   margin: 0 auto;
   width: 300px;
 `
-export const PublishToken = () => {
-  const { state } = useEth();
-  const { web3, contract, accounts } = state;
+export const Exchange = () => {
+  const { state:{ web3, contract: {BDTToken,Exchange}, accounts } } = useEth();
   const [form] = Form.useForm()
   const [fromBalance, setFromBalance] = useState('')
-  const rules = [{ required: true, message: '必填' }]
+  const rules = [{ required: false, message: '必填' }]
   const handleSubmit = (val) => {
-    contract.methods.transfer(val.to,Web3.utils.toWei(val.count)).send({from: val.from})
-    handleAccountChange(val.from)
+    const s = 20
+    Exchange.methods.depositEther().send({
+      from: accounts[0],
+      value: Web3.utils.toWei(`10`,"ether")
+    })
+    // BDTToken.methods.transfer(val.to,web3.utils.toWei(val.count)).send({from: val.from})
   }
   const handleAccountChange = async (val) => {
-    const banlance = await contract.methods.balanceOf(val).call()
-    setFromBalance(Web3.utils.fromWei(banlance.toString(), "ether"))
+    const banlance = await BDTToken.methods.balanceOf(val).call()
+    setFromBalance(web3.utils.fromWei(banlance.toString(), "ether"))
   }
   return <>
     <AccountBox>
