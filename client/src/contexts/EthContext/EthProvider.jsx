@@ -3,8 +3,10 @@ import Web3 from "web3";
 import EthContext from "./EthContext";
 import { reducer, actions, initialState } from "./state";
 // import SimpleStorageContract from './../../contracts/SimpleStorage.json'
-import PersonListStorageContract from './../../contracts/PersonListStorage.json'
+// import PersonListStorageContract from './../../contracts/PersonListStorage.json'
 // import StudentStorageContract from './../../contracts/StudentStorage.json'
+// import ETHTokenContract from './../../contracts/ETHToken.json'
+import BDTToken from './../../contracts/BDTToken.json'
 
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -33,7 +35,7 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = PersonListStorageContract;
+        const artifact = BDTToken;
         init(artifact);
       } catch (err) {
         console.error(err);

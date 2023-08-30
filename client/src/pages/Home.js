@@ -24,7 +24,7 @@ export const Home = () => {
   
   const handleSetStudent = async () => {
     await contract.methods.setPerson(name,age * 1).send({from : accounts[0]})
-    handleGetStudent()
+    await handleGetStudent()
   }
   
   useEffect(() => {
