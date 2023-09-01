@@ -1,5 +1,5 @@
 const Exchange = artifacts.require("Exchange");
 
 module.exports = function (deployer) {
-  deployer.deploy(Exchange, `0x6e2EF1583f9F347eF77dD1D0367Ce52DdEAEf9Dc`, 6);
+  deployer.deploy(Exchange, `0xde1A85db11327f4F9A4Fcc98096c4e27632Ba6Aa`, 6);
 };

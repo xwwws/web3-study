@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-
+pragma abicoder v2;
 contract StudentStorage {
 
   // storeage 状态变量 占用链上空间 消耗gas多
