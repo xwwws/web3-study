@@ -19,9 +19,9 @@ function EthProvider({ children }) {
         const networkID = await web3.eth.net.getId();
         let BDTTokenAddress, ExchangeAddress, contract;
         try {
-
           BDTTokenAddress = artifact.BDTToken.networks[networkID].address;
-          ExchangeAddress = artifact.BDTToken.networks[networkID].address;
+          ExchangeAddress = artifact.Exchange.networks[networkID].address;
+          console.log(ExchangeAddress)
           contract = {
             BDTToken: new web3.eth.Contract(artifact.BDTToken.abi, BDTTokenAddress),
             Exchange: new web3.eth.Contract(artifact.Exchange.abi, ExchangeAddress),
