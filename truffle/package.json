@@ -6,7 +6,6 @@
     "test": "truffle test"
   },
   "dependencies": {
-    "@truffle/hdwallet-provider": "^2.1.7",
-    "openzeppelin-solidity": "^3.4.2"
+    "@truffle/hdwallet-provider": "^2.1.7"
   }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 // 源码遵循协议， MIT...
 pragma solidity >=0.4.22 <0.9.0;
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+
 import "./BDTToken.sol";
 contract Exchange {
     using SafeMath for uint256;

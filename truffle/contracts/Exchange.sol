@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
 // 源码遵循协议， MIT...
 pragma solidity >=0.4.22 <0.9.0;
-pragma abicoder v2;
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+
 import "./BDTToken.sol";
 
 contract Exchange {
-    using SafeMath for uint256;
-    // 收费账号地址
+
     address public feeAccount;
-    // 费率
+
     uint public feePercent;
 
     address constant ETHER = address(0);
@@ -25,13 +23,8 @@ contract Exchange {
 
     //存以太币
     function depositEther() payable public  {
-        //msg.sender
-        //msg.value
-        tokens[ETHER][msg.sender] = tokens[ETHER][msg.sender].add(msg.value);
+        tokens[ETHER][msg.sender] = tokens[ETHER][msg.sender] + msg.value;
         emit Deposit(ETHER, msg.sender, msg.value, tokens[ETHER][msg.sender]);
-    }
-     function getEtherBalance() view public returns( uint256 balance) {
-        return tokens[ETHER][msg.sender];
     }
 
 
@@ -42,7 +35,7 @@ contract Exchange {
         require(
             BDTToken(_token).transferFrom(msg.sender, address(this), _amount)
         );
-        tokens[_token][msg.sender] = tokens[_token][msg.sender].add(_amount);
+        tokens[_token][msg.sender] = tokens[_token][msg.sender] + _amount;
 
         emit Deposit(_token, msg.sender, _amount, tokens[_token][msg.sender]);
     }

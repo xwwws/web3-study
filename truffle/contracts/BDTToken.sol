@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-pragma abicoder v2;
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract BDTToken {
-    using SafeMath for uint256;
     string public name = "BDToken";
     string public symbol = "BDT";
 
@@ -70,7 +67,7 @@ contract BDTToken {
         require(balanceOf[_from] >=  _value);
         require(allowance[_from][msg.sender] >=  _value);
         // 该用户给交易所授权的额度减少_value
-        allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);
+        allowance[_from][msg.sender] = allowance[_from][msg.sender] - _value;
         _transfer(_from, _to, _value);
         return true;
     }
@@ -79,8 +76,8 @@ contract BDTToken {
     function _transfer(address _from, address _to, uint256 _value) internal {
         // 确保转账方有足够的token
         require(balanceOf[_from] >= _value);
-        balanceOf[_from] = balanceOf[_from].sub(_value);
-        balanceOf[_to] = balanceOf[_to].add(_value);
+        balanceOf[_from] = balanceOf[_from] - _value;
+        balanceOf[_to] = balanceOf[_to] + _value;
         emit Transfer(_from, _to, _value);
     }
 }

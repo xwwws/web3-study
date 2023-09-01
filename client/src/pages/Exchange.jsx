@@ -12,18 +12,20 @@ export const Exchange = () => {
   const { state:{ web3, contract: {BDTToken,Exchange}, accounts } } = useEth();
   const [form] = Form.useForm()
   const [fromBalance, setFromBalance] = useState('')
-  const rules = [{ required: false, message: '必填' }]
-  const handleSubmit = (val) => {
+  const rules = [{ required: true, message: '必填' }]
+  const handleSubmit = async (val) => {
     const s = 20
-    Exchange.methods.depositEther().send({
-      from: accounts[0],
-      value: Web3.utils.toWei(`10`,"ether")
+    await Exchange.methods.depositEther().send({
+      from: val.from,
+      value: Web3.utils.toWei(val.count.toString(),"ether")
     })
+    console.log('以太坊存入成功')
     // BDTToken.methods.transfer(val.to,web3.utils.toWei(val.count)).send({from: val.from})
   }
   const handleAccountChange = async (val) => {
-    const banlance = await BDTToken.methods.balanceOf(val).call()
-    setFromBalance(web3.utils.fromWei(banlance.toString(), "ether"))
+    // const banlance = await BDTToken.methods.balanceOf(val).call()
+    console.log(await web3.eth.getBalance(val))
+    // setFromBalance(web3.utils.fromWei(banlance.toString(), "ether"))
   }
   return <>
     <AccountBox>
@@ -43,13 +45,13 @@ export const Exchange = () => {
         <Form.Item label={ `token count` } name={ `count` } rules={ rules }>
           <Input></Input>
         </Form.Item>
-        <Form.Item label={ `account to` } name={ `to` } rules={ rules }>
-          <Select
-            options={ accounts?.map(item => ({ label: item, value: item })) }
-          />
-        </Form.Item>
+        {/*<Form.Item label={ `account to` } name={ `to` } rules={ rules }>*/}
+        {/*  <Select*/}
+        {/*    options={ accounts?.map(item => ({ label: item, value: item })) }*/}
+        {/*  />*/}
+        {/*</Form.Item>*/}
         <Form.Item wrapperCol={ { offset: 10 } }>
-          <Button htmlType={ "submit" } type={ "primary" }>trnasfer</Button>
+          <Button htmlType={ "submit" } type={ "primary" }>deposit</Button>
         </Form.Item>
       </Form>
     </AccountBox>
