@@ -44,7 +44,7 @@ module.exports = async function (callback) {
   await BDT.approve(exchange.address,toWei(100000),{
     from: acc0
   })
-  console.log('授权额度', fromWei(await BDT.allowance(exchange.address, acc0)))
+  console.log('授权额度', fromWei(await BDT.allowance(acc0,ETHER_ADDRESS )))
 
   await exchange.depositToken(BDT.address, toWei(100000),{
     from: acc0
@@ -52,7 +52,7 @@ module.exports = async function (callback) {
   const exchangeBDTBalance = await exchange.tokens(BDT.address, acc0,{from: acc0})
   console.log('交易所中BDT余额:', fromWei(exchangeBDTBalance))
   
-  console.log('授权额度', fromWei(await BDT.allowance(exchange.address, acc0)))
+  console.log('授权额度', fromWei(await BDT.allowance(ETHER_ADDRESS, acc0)))
 
 
 
