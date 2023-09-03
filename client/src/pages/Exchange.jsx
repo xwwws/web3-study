@@ -17,7 +17,6 @@ export const Exchange = () => {
   const [tokens, SetTokens] = useState('0')
   const handleDeposit = useCallback(async () => {
     const values = await form.validateFields()
-    console.log(Exchange)
     await Exchange.methods.depositEther().send({
       from: values.from,
       value: Web3.utils.toWei(values.count.toString(), "ether")
@@ -26,7 +25,7 @@ export const Exchange = () => {
   const handleWithDraw = useCallback(async () => {
     const values = await form.validateFields()
     try {
-      await Exchange.methods.withDrawEther(Web3.utils.toWei(values.count.toString(), "ether")).send({
+      await Exchange?.methods.withDrawEther(Web3.utils.toWei(values.count.toString(), "ether")).send({
         from: values.from
       })
     } catch (err) {
@@ -38,8 +37,8 @@ export const Exchange = () => {
   }, [form, Exchange])
   useEffect(() => {
     (async () => {
-      const res = await Exchange.methods.tokens(ETHER_ADDRESS, accounts[0]).call()
-      console.log(Web3.utils.fromWei(res, "ether"))
+      const res = await Exchange?.methods.tokens(ETHER_ADDRESS, accounts[0]).call()
+      console.log(Web3.utils.fromWei(res || '0', "ether"))
     })()
   }, [form, Exchange])
   return <>
