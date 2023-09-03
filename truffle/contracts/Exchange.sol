@@ -112,11 +112,16 @@ contract Exchange {
         uint256 timestamp
     );
 
-    function payGas(address tokenAddress, address user, uint256 fee) private {
+    function payGas(
+        address tokenAddress,
+        address user,
+        uint256 fee
+    ) private returns (bool) {
         tokens[tokenAddress][feeAccount] =
             tokens[tokenAddress][feeAccount] +
             fee;
         tokens[tokenAddress][user] = tokens[tokenAddress][user] - fee;
+        return true;
     }
 
     // makeOrder
@@ -127,8 +132,7 @@ contract Exchange {
         address _tokenPay,
         uint256 _amountPay
     ) public {
-        uint256 fee = (_amountPay * feeRate) / 2;
-        require(tokens[_tokenPay][msg.sender] > (_amountPay + fee));
+        require(tokens[_tokenPay][msg.sender] > _amountPay);
         orderCount = orderCount + 1;
         orders[orderCount] = _Order(
             orderCount,
@@ -140,7 +144,7 @@ contract Exchange {
             block.timestamp
         );
         // 付费
-        payGas(_tokenPay, msg.sender, fee);
+
         emit Order(
             orderCount,
             msg.sender,
@@ -173,8 +177,10 @@ contract Exchange {
     function fillOrder(uint256 _orderId) public {
         _Order memory curOrder = orders[_orderId];
         require(curOrder.id == _orderId);
-        uint256 fee = (curOrder.amountGet * feeRate) / 2;
-		require(tokens[curOrder.tokenGet][msg.sender] > (curOrder.amountGet + fee));
+        uint256 fee = (curOrder.amountGet * feeRate);
+        require(
+            tokens[curOrder.tokenGet][msg.sender] > (curOrder.amountGet + fee)
+        );
         orderFill[_orderId] = true;
         // uint256 gas =
         // 账户余额更换  && 收取小费（填充订单的人付费）
@@ -194,8 +200,8 @@ contract Exchange {
             tokens[curOrder.tokenGet][msg.sender] +
             curOrder.amountGet;
 
-		// 处理手续费
-		payGas(curOrder.tokenGet, msg.sender, fee);
+        // 处理手续费
+        payGas(curOrder.tokenGet, msg.sender, fee);
 
         emit Trade(
             curOrder.id,
