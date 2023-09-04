@@ -1,12 +1,13 @@
 
 html, body, #root {
-    font-size: 10px;
-    min-height: 100vh;
-    min-width: 100vw;
+  font-size: 10px;
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    font-family: YouSheBiaoTiHei !important;
+  margin: 0;
+  padding: 0;
+  font-family: YouSheBiaoTiHei !important;
+  box-sizing: border-box;
 }
