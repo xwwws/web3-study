@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexAlignCenter, FlexCenter } from "../utils/styleComponents";
-
 const HeaderStyle = styled.div`
+  font-family: YouSheBiaoTiHei;
   background-color: #ffffff;
   width: 100%;
   height: 100%;
