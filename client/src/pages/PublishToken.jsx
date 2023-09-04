@@ -8,7 +8,7 @@ const AccountBox = styled.div`
   margin: 0 auto;
   width: 300px;
 `
-export const PublishToken = () => {
+const PublishToken = () => {
   const { state:{ web3, contract: {BDTToken,}, accounts } } = useEth();
   const [form] = Form.useForm()
   const [fromBalance, setFromBalance] = useState('')
@@ -51,3 +51,4 @@ export const PublishToken = () => {
     </AccountBox>
   </>
 }
+export default PublishToken;

@@ -1,15 +1,20 @@
 import { EthProvider } from "./contexts/EthContext";
-import { Home } from "./pages/Home";
-import { PublishToken } from "./pages/PublishToken";
-import { Exchange } from "./pages/Exchange";
+import { BrowserRouter } from "react-router-dom";
+import RouteView from "./router";
 
 function App() {
   return (
-    <EthProvider>
-      {/*<Home/>*/}
-      {/*<PublishToken/>*/}
-      <Exchange/>
-    </EthProvider>
+    <>
+      {/*<EthProvider>*/ }
+      {/*</EthProvider>*/ }
+      <BrowserRouter>
+        <EthProvider>
+          <RouteView/>
+        </EthProvider>
+      </BrowserRouter>
+
+    </>
+
 
   );
 }

@@ -40,7 +40,7 @@ module.exports = async function (callback) {
   }
 
 
-  const logAlowance = async acc => {
+  const logAllowance = async acc => {
     console.log('授权额度', fromWei(await BDT.allowance(acc0, exchange.address)))
   }
 
@@ -60,7 +60,7 @@ module.exports = async function (callback) {
 
     await logBalance(acc, accname)
   }
-  // await etherFn(acc1, 'acc1')
+  await etherFn(acc1, 'acc1')
 
 
   async function depositToken() {
@@ -69,7 +69,7 @@ module.exports = async function (callback) {
     await BDT.approve(exchange.address, toWei(10000), {
       from: acc0
     })
-    await logAlowance(acc0)
+    await logAllowance(acc0)
     // 将BDT转移到交易所
     await exchange.depositToken(BDT.address, toWei(10000), {
       from: acc0
@@ -140,9 +140,10 @@ module.exports = async function (callback) {
     await logBalance(acc1, 'acc1')
     await logBalance(feeAccount, '收费账户')
   }
-  await endTrade(3)
+  // await endTrade(3)
 
-  // await logTrade(2,2)
-
+  await logBalance(acc0, 'acc0')
+  await logBalance(acc1, 'acc1')
+  await logBalance(feeAccount, '收费账户')
   callback();
 };

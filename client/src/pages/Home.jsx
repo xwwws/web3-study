@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useEth from "../contexts/EthContext/useEth";
 import { Button, Input } from "antd";
 
-export const Home = () => {
+const Home = () => {
 
   const { state } = useEth();
   const [name, setName] = useState('')
@@ -51,3 +51,5 @@ export const Home = () => {
 
   </>
 }
+
+export default Home

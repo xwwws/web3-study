@@ -10,7 +10,7 @@ const AccountBox = styled.div`
   margin: 0 auto;
   width: 300px;
 `
-export const Exchange = () => {
+const Exchange = () => {
   const {state: {web3, contract: {BDTToken, Exchange}, accounts}} = useEth();
   const [form] = Form.useForm()
   const rules = [{required: true, message: '必填'}]
@@ -62,3 +62,4 @@ export const Exchange = () => {
     </AccountBox>
   </>
 }
+export default Exchange;
