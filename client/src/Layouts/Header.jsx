@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FlexAlignCenter, FlexCenter } from "../utils/styleComponents";
 
 const HeaderStyle = styled.div`
-  background-color: #fefefe;
+  background-color: #ffffff;
   width: 100%;
   height: 100%;
   padding: 10px 20px;

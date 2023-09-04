@@ -19,10 +19,12 @@ const Index = () => {
       </Layout.Header>
       <Layout>
         <Layout>
-          <Layout.Content>
+          <Layout.Content style={{backgroundColor: 'transparent'}}>
             <Outlet></Outlet>
           </Layout.Content>
-          <Layout.Footer>Footer</Layout.Footer>
+          <Layout.Footer style={{backgroundColor: 'transparent'}}>
+            footer
+          </Layout.Footer>
         </Layout>
       </Layout>
     </Layout>

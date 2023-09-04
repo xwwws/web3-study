@@ -10,4 +10,17 @@ html, body, #root {
   padding: 0;
   font-family: YouSheBiaoTiHei !important;
   box-sizing: border-box;
+
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: rgba(100, 100, 150, .1);
+  border-radius: 3px;
+  display: none;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 150, .3);
+  border-radius: 3px;
+  display: none;
 }

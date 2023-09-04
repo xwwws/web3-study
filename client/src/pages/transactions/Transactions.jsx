@@ -1,10 +1,11 @@
 import React from "react";
+import PageContainer from "../../utils/PageContainer";
 
 
 export const Transactions = () => {
-  return <>
+  return <PageContainer>
     Transactions
-  </>
+  </PageContainer>
 }
 
 export default Transactions
