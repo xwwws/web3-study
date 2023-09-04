@@ -35,6 +35,22 @@ module.exports = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.less$/i,
+        use: ["style-loader", "css-loader", "less-loader"],
+      },
+      // 使用 ttf-loader 后  会让字体文件失效
+      // {
+      //   test: /\.ttf$/,
+      //   use: [
+      //     {
+      //       loader: 'ttf-loader',
+      //       options: {
+      //         name: './font/[hash].[ext]',
+      //       },
+      //     },
+      //   ]
+      // }
     ],
   },
   plugins: [
