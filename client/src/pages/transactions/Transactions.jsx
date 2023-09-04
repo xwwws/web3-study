@@ -6,3 +6,5 @@ export const Transactions = () => {
     Transactions
   </>
 }
+
+export default Transactions
