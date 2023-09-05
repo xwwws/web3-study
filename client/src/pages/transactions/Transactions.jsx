@@ -10,7 +10,7 @@ const TabsStyle = styled.div`
   justify-content: center;
   align-items: center;
 `
-const defaultActiveKey = '2'
+const defaultActiveKey = '1'
 const items = [
   { key: '1', label: '转账' },
   { key: '2', label: '交易' }

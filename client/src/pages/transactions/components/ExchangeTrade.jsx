@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card, Form, Input, message, Select } from "antd";
 import styled from "styled-components";
-import { actions, useEth } from "../../../contexts/EthContext";
+import { useEth } from "../../../contexts/EthContext";
 import { hashLength, toWei } from "../../../utils/utils";
 
 const transactions = [
@@ -26,7 +26,6 @@ const ExchangeTrade = () => {
       accounts,
       contract: { BDTToken, Exchange }
     },
-    dispatch
   } = useEth()
   const [form] = Form.useForm()
   const rules = [{ required: true, message: '必填' }]
@@ -54,13 +53,12 @@ const ExchangeTrade = () => {
         })
         break;
       case '05':
-        if(!values.accountTo) return  message.error('选择收款账户')
+        if (!values.accountTo) return message.error('选择收款账户')
         await BDTToken.methods.transfer(values.accountTo, toWei(values.amount)).send({
           from: values.account
         })
         break;
     }
-    dispatch({ type: actions.init, data: {} })
   }
   return (
     <TradeStyleWarp>

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useEth } from "../../../contexts/EthContext";
 import { fromWei } from "../../../utils/utils";
 import styled from "styled-components";
-import { Card } from "antd";
-
+import {useSelector,useDispatch} from 'react-redux'
+import { setAccountsAsset } from "../../../redux/slices/balanceSlice";
 const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
 const UserAssetsWarp = styled.div`
   display: grid;
@@ -46,7 +46,8 @@ const UserAssets = () => {
       contract: { BDTToken, Exchange }
     }
   } = useEth()
-  const [userAssets, setUserAssets] = useState([])
+  const accountInfos = useSelector(state => state.balance.accountsAsset)
+  const dispatch = useDispatch()
   useEffect(() => {
     (async () => {
       if (web3) {
@@ -60,13 +61,13 @@ const UserAssets = () => {
             exchangeETH: fromWei(await Exchange.methods.balanceOf(ETH_ADDRESS, userAddress).call())
           })
         }
-        setUserAssets(users)
+        dispatch(setAccountsAsset(users))
       }
     })()
   }, [web3, accounts, BDTToken, Exchange]);
   return <UserAssetsWarp>
     {
-      userAssets.map(item => (
+      accountInfos.map(item => (
         <UserInfoItemStyle key={ item.userAddress }>
           <div className="infoItem">
             <div className="label">address</div>
