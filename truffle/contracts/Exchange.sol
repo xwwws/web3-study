@@ -69,7 +69,7 @@ contract Exchange {
     /**
 		订单相关
 	 */
-    struct _Order {
+    struct _Order { 
         uint256 id;
         address user;
         address tokenGet;
