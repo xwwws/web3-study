@@ -39,11 +39,21 @@ const ExchangeTrade = () => {
         })
         break;
       case '02':
-        await BDTToken.methods.approve(Exchange.options.address,toWei(values.amount)).send({from: values.account})
-        await Exchange.methods.depositToken(BDTToken.options.address,toWei(values.amount)).send({from: values.account})
+        await BDTToken.methods.approve(Exchange.options.address, toWei(values.amount)).send({ from: values.account })
+        await Exchange.methods.depositToken(BDTToken.options.address, toWei(values.amount)).send({ from: values.account })
+        break;
+      case '03':
+        await Exchange.methods.withDrawEther(toWei(values.amount)).send({
+          from: values.account
+        })
+        break;
+      case '04':
+        await Exchange.methods.withDrawToken(BDTToken.options.address, toWei(values.amount)).send({
+          from: values.account
+        })
         break;
     }
-    dispatch({type:actions.init, data: {}})
+    dispatch({ type: actions.init, data: {} })
   }
   return (
     <TradeStyleWarp>

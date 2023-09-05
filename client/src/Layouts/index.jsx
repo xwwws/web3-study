@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Index = () => {
   return <>
-    <Layout style={{'min-height': '100vh'}}>
+    <Layout style={{'minHeight': '100vh'}}>
       <Layout.Header style={{
         position: 'sticky',
         top: 0,

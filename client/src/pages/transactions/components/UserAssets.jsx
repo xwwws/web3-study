@@ -52,6 +52,7 @@ const UserAssets = () => {
             exchangeETH: fromWei(await Exchange.methods.balanceOf(ETH_ADDRESS, userAddress).call())
           })
         }
+        console.log(users)
         setUserAssets(users)
       }
     })()

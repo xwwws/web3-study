@@ -54,7 +54,6 @@ contract Exchange {
         tokens[ETHER][msg.sender] = tokens[ETHER][msg.sender] - _amount;
         // payable  当前合约地址转到msg.sender
         payable(msg.sender).transfer(_amount);
-
         emit WithDraw(ETHER, msg.sender, _amount, tokens[ETHER][msg.sender]);
     }
 
