@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Form, Input, Select } from "antd";
+import { Button, Card, Form, Input, message, Select } from "antd";
 import styled from "styled-components";
 import { actions, useEth } from "../../../contexts/EthContext";
 import { hashLength, toWei } from "../../../utils/utils";
@@ -9,6 +9,7 @@ const transactions = [
   { value: '02', label: '充值BDT' },
   { value: '03', label: '提现ETH' },
   { value: '04', label: '提现BDT' },
+  { value: '05', label: '转账BDT' },
 ]
 const TradeStyleWarp = styled.div`
   margin-top: 20px;
@@ -52,6 +53,12 @@ const ExchangeTrade = () => {
           from: values.account
         })
         break;
+      case '05':
+        if(!values.accountTo) return  message.error('选择收款账户')
+        await BDTToken.methods.transfer(values.accountTo, toWei(values.amount)).send({
+          from: values.account
+        })
+        break;
     }
     dispatch({ type: actions.init, data: {} })
   }
@@ -67,8 +74,30 @@ const ExchangeTrade = () => {
             </Form.Item>
             <Form.Item label={ 'account' } name={ 'account' } rules={ rules }>
               <Select>
-                { accounts?.map(accAddress => <Select.Option value={ accAddress }
-                                                             key={ accAddress }>{ hashLength(accAddress) }</Select.Option>) }
+                {
+                  accounts?.map(accAddress => (
+                    <Select.Option
+                      value={ accAddress }
+                      key={ accAddress }
+                    >
+                      { hashLength(accAddress) }
+                    </Select.Option>
+                  ))
+                }
+              </Select>
+            </Form.Item>
+            <Form.Item label={ 'accountTo' } name={ 'accountTo' }>
+              <Select>
+                {
+                  accounts?.map(accAddress => (
+                    <Select.Option
+                      value={ accAddress }
+                      key={ accAddress }
+                    >
+                      { hashLength(accAddress) }
+                    </Select.Option>
+                  ))
+                }
               </Select>
             </Form.Item>
             <Form.Item label={ 'amount' } name={ 'amount' } rules={ rules }>
