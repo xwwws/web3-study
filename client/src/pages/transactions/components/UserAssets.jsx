@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useEth } from "../../../contexts/EthContext";
 import { fromWei } from "../../../utils/utils";
 import styled from "styled-components";
-import {useSelector,useDispatch} from 'react-redux'
-import { setAccountsAsset } from "../../../redux/slices/balanceSlice";
-const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
+import { useSelector, useDispatch } from 'react-redux'
+import { loadBalanceData } from "../../../redux/slices/balanceSlice";
+
 const UserAssetsWarp = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -39,59 +39,40 @@ const UserInfoItemStyle = styled.div`
   }
 `
 const UserAssets = () => {
-  const {
-    state: {
-      web3,
-      accounts,
-      contract: { BDTToken, Exchange }
-    }
-  } = useEth()
+  const { state } = useEth()
   const accountInfos = useSelector(state => state.balance.accountsAsset)
   const dispatch = useDispatch()
   useEffect(() => {
     (async () => {
-      if (web3) {
-        const users = []
-        for (const userAddress of accounts) {
-          users.push({
-            userAddress,
-            ETH: fromWei(await web3?.eth.getBalance(userAddress)),
-            BDT: fromWei(await BDTToken.methods.balanceOf(userAddress).call()),
-            exchangeBDT: fromWei(await Exchange.methods.balanceOf(BDTToken.options.address, userAddress).call()),
-            exchangeETH: fromWei(await Exchange.methods.balanceOf(ETH_ADDRESS, userAddress).call())
-          })
-        }
-        dispatch(setAccountsAsset(users))
+      if (state.web3) {
+        dispatch(loadBalanceData(state))
       }
     })()
-  }, [web3, accounts, BDTToken, Exchange]);
+
+  }, [state]);
   return <UserAssetsWarp>
-    {
-      accountInfos.map(item => (
-        <UserInfoItemStyle key={ item.userAddress }>
-          <div className="infoItem">
-            <div className="label">address</div>
-            <div className="value">{ item.userAddress }</div>
-          </div>
-          <div className="infoItem">
-            <div className="label">ETH</div>
-            <div className="value">{ item.ETH }</div>
-          </div>
-          <div className="infoItem">
-            <div className="label">BDT</div>
-            <div className="value">{ item.BDT }</div>
-          </div>
-          <div className="infoItem">
-            <div className="label">exchange ETH</div>
-            <div className="value">{ item.exchangeETH }</div>
-          </div>
-          <div className="infoItem">
-            <div className="label">exchange BDT</div>
-            <div className="value">{ item.exchangeBDT }</div>
-          </div>
-        </UserInfoItemStyle>
-      ))
-    }
+    { accountInfos.map(item => (<UserInfoItemStyle key={ item.userAddress }>
+        <div className="infoItem">
+          <div className="label">address</div>
+          <div className="value">{ item.userAddress }</div>
+        </div>
+        <div className="infoItem">
+          <div className="label">ETH</div>
+          <div className="value">{ item.ETH }</div>
+        </div>
+        <div className="infoItem">
+          <div className="label">BDT</div>
+          <div className="value">{ item.BDT }</div>
+        </div>
+        <div className="infoItem">
+          <div className="label">exchange ETH</div>
+          <div className="value">{ item.exchangeETH }</div>
+        </div>
+        <div className="infoItem">
+          <div className="label">exchange BDT</div>
+          <div className="value">{ item.exchangeBDT }</div>
+        </div>
+      </UserInfoItemStyle>)) }
   </UserAssetsWarp>
 }
 

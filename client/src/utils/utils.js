@@ -1,5 +1,5 @@
 import Web3 from "web3";
-
+export const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const toWei = number => Web3.utils.toWei(number.toString(),"ether")
 export const fromWei = number => Web3.utils.fromWei(number.toString(),"ether")
 
