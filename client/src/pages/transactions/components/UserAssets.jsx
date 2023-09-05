@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useEth } from "../../../contexts/EthContext";
 import { fromWei } from "../../../utils/utils";
 import styled from "styled-components";
+import { Card } from "antd";
 
 const ETH_ADDRESS = '0x0000000000000000000000000000000000000000'
 const UserAssetsWarp = styled.div`
@@ -12,10 +13,16 @@ const UserAssetsWarp = styled.div`
   gap: 30px;
 `
 const UserInfoItemStyle = styled.div`
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #f1f1f1;
   display: grid;
   gap: 20px;
+
   .infoItem {
     display: flex;
+
     .label {
       display: flex;
       justify-content: center;
@@ -23,6 +30,7 @@ const UserInfoItemStyle = styled.div`
       width: 120px;
       margin-right: 10px;
     }
+
     .value {
       flex: 1;
       white-space: break-spaces;
@@ -52,7 +60,6 @@ const UserAssets = () => {
             exchangeETH: fromWei(await Exchange.methods.balanceOf(ETH_ADDRESS, userAddress).call())
           })
         }
-        console.log(users)
         setUserAssets(users)
       }
     })()
@@ -60,7 +67,7 @@ const UserAssets = () => {
   return <UserAssetsWarp>
     {
       userAssets.map(item => (
-        <UserInfoItemStyle key={ item.userAddress } style={{fontFamily: "微软雅黑" }}>
+        <UserInfoItemStyle key={ item.userAddress }>
           <div className="infoItem">
             <div className="label">address</div>
             <div className="value">{ item.userAddress }</div>

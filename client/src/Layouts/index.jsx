@@ -22,8 +22,8 @@ const Index = () => {
           <Layout.Content style={{backgroundColor: 'transparent'}}>
             <Outlet></Outlet>
           </Layout.Content>
-          <Layout.Footer style={{backgroundColor: 'transparent'}}>
-            footer
+          <Layout.Footer style={{backgroundColor: '#fff'}}>
+            这里是底部
           </Layout.Footer>
         </Layout>
       </Layout>

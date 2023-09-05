@@ -82,7 +82,7 @@ module.exports = async function(callback) {
     console.groupEnd()
   }
 
-  await depositToken(acc0,1000)
+  // await depositToken(acc0,1000)
 
   async function withDrawToken() {
     console.group('-----提取--token-----')

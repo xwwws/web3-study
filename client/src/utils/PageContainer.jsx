@@ -10,7 +10,6 @@ const PageContainerStyle = styled.div`
   }
   @media screen and  (max-width:1400px) {
     width: 100%;
-    background-color: red
   }
   @media screen and  (max-width: 700px) {
     width: 100%;
