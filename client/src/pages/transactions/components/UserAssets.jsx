@@ -42,7 +42,6 @@ const UserAssets = () => {
   useEffect(() => {
     (async () => {
       if (web3) {
-        console.log(BDTToken)
         const users = []
         for (const userAddress of accounts) {
           users.push({
@@ -53,7 +52,6 @@ const UserAssets = () => {
             exchangeETH: fromWei(await Exchange.methods.balanceOf(ETH_ADDRESS, userAddress).call())
           })
         }
-        console.log(users)
         setUserAssets(users)
       }
     })()

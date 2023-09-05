@@ -41,7 +41,6 @@ contract Exchange {
     //存其他货币
     function depositToken(address _token, uint256 _amount) public {
         require(_token != address(0));
-        //调用某个方法强行从你账户往当前交易所账户转钱
         require(
             BDTToken(_token).transferFrom(msg.sender, address(this), _amount)
         );

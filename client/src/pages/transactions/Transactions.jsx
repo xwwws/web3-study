@@ -1,13 +1,13 @@
 import React from "react";
 import PageContainer from "../../utils/PageContainer";
 import UserAssets from "./components/UserAssets";
-import Trade from "./components/Trade";
+import ExchangeTrade from "./components/ExchangeTrade";
 
 export const Transactions = () => {
 
   return <PageContainer>
     <UserAssets/>
-    <Trade/>
+    <ExchangeTrade/>
   </PageContainer>
 }
 

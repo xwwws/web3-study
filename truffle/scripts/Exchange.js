@@ -10,7 +10,7 @@ const BDTToken = artifacts.require("BDTToken");
 const ETHER_ADDRESS = '0x0000000000000000000000000000000000000000'
 const toWei = number => web3.utils.toWei(number.toString(), 'ether')
 const fromWei = number => web3.utils.fromWei(number.toString(), 'ether')
-module.exports = async function (callback) {
+module.exports = async function(callback) {
   const exchange = await Exchange.deployed();
   const BDT = await BDTToken.deployed();
   const accounts = await web3.eth.getAccounts()
@@ -20,7 +20,8 @@ module.exports = async function (callback) {
 
 
   const logBalance = async (acc, index = 'acc0') => {
-    console.group(`${index}详情：`)
+    console.group(`${ index }详情：`)
+    console.log(acc)
     const walletBalance = [
       {
         name: 'wallet BDT',
@@ -45,8 +46,8 @@ module.exports = async function (callback) {
   }
 
 
-  async function etherFn(acc,accname) {
-
+  async function etherFn(acc, accname) {
+    console.group('-----etherFn-------')
     await exchange.depositEther({
       from: acc,
       value: toWei(1000)
@@ -59,11 +60,13 @@ module.exports = async function (callback) {
 
 
     await logBalance(acc, accname)
+    console.groupEnd()
   }
-  await etherFn(acc1, 'acc1')
+
+  // await etherFn(acc1, 'acc1')
 
 
-  async function depositToken() {
+  async function depositToken(acc,amount) {
     console.group('-----存入--token-----')
     // 授权给交易所额度
     await BDT.approve(exchange.address, toWei(10000), {
@@ -78,7 +81,8 @@ module.exports = async function (callback) {
     await logBalance(acc0)
     console.groupEnd()
   }
-  // await depositToken()
+
+  await depositToken(acc0,1000)
 
   async function withDrawToken() {
     console.group('-----提取--token-----')
@@ -94,52 +98,53 @@ module.exports = async function (callback) {
   async function startTrade() {
     console.group('--------------交易--------------');
 
-
     /**
      * 创建交易
      * acc1
      */
-    await exchange.makeOrder(ETHER_ADDRESS,toWei(100),BDT.address, toWei(100),{from: acc0})
+    await exchange.makeOrder(
+      ETHER_ADDRESS,
+      toWei(100),
+      BDT.address,
+      toWei(100),
+      { from: acc0 }
+    )
 
-    await logBalance(acc0, 'acc0')
-    await logBalance(acc1, 'acc1')
-    await logBalance(feeAccount, '收费账户')
     console.groupEnd()
   }
 
-  // await depositToken()
   // await startTrade()
-  const logTrade = async (index,type = 0) => {
+  const logTrade = async (index, type = 0) => {
     let tradeName = '';
-    switch(type) {
-      case 0: 
-      tradeName = 'orders';
-      break;
-      case 1: 
-      tradeName = 'orderCancel';
-      break;
-      case 2: 
-      tradeName = 'orderFill';
-      break;
+    switch (type) {
+      case 0:
+        tradeName = 'orders';
+        break;
+      case 1:
+        tradeName = 'orderCancel';
+        break;
+      case 2:
+        tradeName = 'orderFill';
+        break;
     }
     const res = await exchange[tradeName](index)
     console.log(res)
   }
-  
+
 
   async function cancelTrade(id) {
+    console.group('--------------cancelTrade--------------');
     await exchange.cancelOrder(id)
-    const res = await exchange.orderCancel(id,{from: acc0})
+    const res = await exchange.orderCancel(id, { from: acc0 })
     console.log(res)
   }
+
   // await cancelTrade(1)
 
   async function endTrade(id) {
-    await exchange.fillOrder(id,{from: acc1})
-    await logBalance(acc0, 'acc0')
-    await logBalance(acc1, 'acc1')
-    await logBalance(feeAccount, '收费账户')
+    await exchange.fillOrder(id, { from: acc1 })
   }
+
   // await endTrade(3)
 
   await logBalance(acc0, 'acc0')
