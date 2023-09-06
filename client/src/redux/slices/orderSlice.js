@@ -72,5 +72,19 @@ export const loadFillOrders = createAsyncThunk(
     })))
   }
 )
+// export const createTransactionOrder = createAsyncThunk(
+//   'order/fetchAllOrders',
+//   async (data, { dispatch }) => {
+//     const { contract: { Exchange } } = data
+//     const orders = await Exchange.getPastEvents('Trade',{
+//       fromBlock: 0,
+//       toBlock: "latest"
+//     })
+//     dispatch(setFillOrders(orders.map(order => {
+//       const {returnValues} = order
+//       return returnValues
+//     })))
+//   }
+// )
 
 

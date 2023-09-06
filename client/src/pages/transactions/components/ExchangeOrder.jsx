@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import { Card, Form, Select, Table } from "antd";
-import { useEth } from "../../../contexts/EthContext";
-import { fromWei, hashLength, toWei } from "../../../utils/utils";
-import { useDispatch, useSelector } from "react-redux";
-import { loadAllOrders, loadCancelOrders, loadFillOrders } from "../../../redux/slices/orderSlice";
+import {Button, Card, Form, Select, Table} from "antd";
+import {useEth} from "../../../contexts/EthContext";
+import {fromWei, hashLength, toWei} from "../../../utils/utils";
+import {useDispatch, useSelector} from "react-redux";
+import {loadAllOrders, loadCancelOrders, loadFillOrders} from "../../../redux/slices/orderSlice";
 import dayjs from "dayjs";
+import CreateTransaction from "./CreateTransaction";
 
 const TradeStyleWarp = styled.div`
 
   .selectAccount {
-    width: 300px;
+    margin-bottom: 30px;
   }
 
   .orderModel {
@@ -28,9 +29,11 @@ const TradeStyleWarp = styled.div`
 
 const ExchangeOrder = () => {
   const dispatch = useDispatch()
-  const { AllOrders, CancelOrders, FillOrders } = useSelector(state => state.order)
-  const { state } = useEth();
+  const {AllOrders, CancelOrders, FillOrders} = useSelector(state => state.order)
+  const {state} = useEth();
+  const [form] = Form.useForm()
   const [currentAcc, setCurrentAcc] = useState('')
+  const [isShowModal, setIsShowModal] = useState(false)
   const columnsStyle = {
     width: '200px',
     align: 'center'
@@ -45,31 +48,31 @@ const ExchangeOrder = () => {
       ...columnsStyle,
       title: 'time',
       dataIndex: 'timestamp',
-      render: text => <>{ dayjs(text * 1000).format('YYYY/MM/DD hh:mm:ss') }</>
+      render: text => <>{dayjs(text * 1000).format('YYYY/MM/DD hh:mm:ss')}</>
     },
     {
       ...columnsStyle,
       title: 'tokenPay',
       dataIndex: 'tokenPay',
-      render: text => <>{ hashLength(text) }</>
+      render: text => <>{hashLength(text)}</>
     },
     {
       ...columnsStyle,
       title: 'amountPay',
       dataIndex: 'amountPay',
-      render: text => <>{ fromWei(text) }</>
+      render: text => <>{fromWei(text)}</>
     },
     {
       ...columnsStyle,
       title: 'tokenGet',
       dataIndex: 'tokenGet',
-      render: text => <>{ hashLength(text) }</>
+      render: text => <>{hashLength(text)}</>
     },
     {
       ...columnsStyle,
       title: 'amountGet',
       dataIndex: 'amountGet',
-      render: text => <>{ fromWei(text) }</>
+      render: text => <>{fromWei(text)}</>
     }
   ]
   useEffect(() => {
@@ -78,59 +81,78 @@ const ExchangeOrder = () => {
       dispatch(loadCancelOrders(state))
       dispatch(loadFillOrders(state))
     })()
-  }, [state])
+  }, [dispatch, state])
+  const handleSubmit = async ({tokenGet,tokenPay,amountGet,amountPay}) => {
+
+    const  {web3, contract: {BDTToken, Exchange}, accounts} = state;
+    const {account} = await form.validateFields()
+    const s = await Exchange.methods.makeOrder(tokenGet,toWei(amountGet),tokenPay,toWei(amountPay)).send({
+      from: account
+    })
+  }
   return <TradeStyleWarp>
+    <CreateTransaction
+      isOpen={isShowModal}
+      onCancel={() => {
+        setIsShowModal(false)
+      }}
+      onSubmit={handleSubmit}
+    />
     <Card>
       <div className="selectAccount">
-        <Form>
-          <Form.Item label={ '当前账户' } name={ 'account' }>
+        <Form layout={"inline"} form={form}>
+          <Form.Item label={'当前账户'} name="account">
             <Select
-              options={ state.accounts?.map(acc => ({ label: hashLength(acc), value: acc })) }
-              onChange={ setCurrentAcc }
+              style={{width: '200px'}}
+              options={state.accounts?.map(acc => ({label: hashLength(acc), value: acc}))}
+              onChange={setCurrentAcc}
             ></Select>
+          </Form.Item>
+          <Form.Item>
+            <Button type={"primary"} onClick={() => setIsShowModal(true)}>发起交易</Button>
           </Form.Item>
         </Form>
       </div>
       <div className="orderModel">
         <Card
           className="orderItem all"
-          hoverable={ true }
-          bordered={ true }
-          title={ '交易中' }
+          hoverable={true}
+          bordered={true}
+          title={'交易中'}
         >
           <Table
             rowKey="id"
-            dataSource={ AllOrders }
-            columns={ transactions_ing_columns }
-            scroll={ { x: '100%' } }
+            dataSource={AllOrders}
+            columns={transactions_ing_columns}
+            scroll={{x: '100%'}}
           />
         </Card>
         <Card
           className="orderItem finish"
-          hoverable={ true }
-          bordered={ true }
-          title={ '已完成交易' }
+          hoverable={true}
+          bordered={true}
+          title={'已完成交易'}
         >
 
           <Table
             rowKey="id"
-            dataSource={ FillOrders }
-            columns={ transactions_ing_columns }
-            scroll={ { x: '100%' } }
+            dataSource={FillOrders}
+            columns={transactions_ing_columns}
+            scroll={{x: '100%'}}
           />
         </Card>
         <Card
           className="orderItem mine"
-          hoverable={ true }
-          bordered={ true }
-          title={ '我的订单' }
+          hoverable={true}
+          bordered={true}
+          title={'我的订单'}
         >
 
           <Table
             rowKey="id"
-            dataSource={ CancelOrders }
-            columns={ transactions_ing_columns }
-            scroll={ { x: '100%' } }
+            dataSource={CancelOrders}
+            columns={transactions_ing_columns}
+            scroll={{x: '100%'}}
           />
         </Card>
       </div>
