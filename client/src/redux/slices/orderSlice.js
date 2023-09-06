@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 
 const orderSlice = createSlice({
+  name: 'order',
   initialState: {
     CancelOrders: [],
     FillOrders: [],
@@ -27,17 +28,49 @@ export const {
 
 export default orderSlice.reducer
 
-export const loadCancelOrders = createAsyncThunk(
-  'order/fetchCancelOrders',
-  async (data, { dispatch }) => {
-    dispatch(setCancelOrders([]))
-  }
-)
-
 export const loadAllOrders = createAsyncThunk(
   'order/fetchAllOrders',
   async (data, { dispatch }) => {
-    dispatch(setAllOrders([]))
+    const { contract: { Exchange } } = data
+    const orders = await Exchange.getPastEvents('Order',{
+      fromBlock: 0,
+      toBlock: "latest"
+    })
+    dispatch(setAllOrders(orders.map(order => {
+      const {returnValues} = order
+      return returnValues
+    })))
   }
 )
+
+export const loadCancelOrders = createAsyncThunk(
+  'order/fetchAllOrders',
+  async (data, { dispatch }) => {
+    const { contract: { Exchange } } = data
+    const orders = await Exchange.getPastEvents('Cancel',{
+      fromBlock: 0,
+      toBlock: "latest"
+    })
+    dispatch(setCancelOrders(orders.map(order => {
+      const {returnValues} = order
+      return returnValues
+    })))
+  }
+)
+
+export const loadFillOrders = createAsyncThunk(
+  'order/fetchAllOrders',
+  async (data, { dispatch }) => {
+    const { contract: { Exchange } } = data
+    const orders = await Exchange.getPastEvents('Trade',{
+      fromBlock: 0,
+      toBlock: "latest"
+    })
+    dispatch(setFillOrders(orders.map(order => {
+      const {returnValues} = order
+      return returnValues
+    })))
+  }
+)
+
 

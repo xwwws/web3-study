@@ -9,7 +9,6 @@ const balanceSlice = createSlice({
   },
   reducers: {
     setAccountsAsset(state, action) {
-      console.log(state, action)
       state.accountsAsset = action.payload
     }
   }

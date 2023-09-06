@@ -1,10 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import balanceSlice from "./slices/balanceSlice";
+import orderSlice from "./slices/orderSlice";
 
 const store = configureStore({
   reducer: {
-    balance: balanceSlice
+    balance: balanceSlice,
+    order: orderSlice,
   },
-
+  // 关闭序列化
+  middleware: getDefaultMiddleware => getDefaultMiddleware({
+    serializableCheck: false
+  })
 })
 export default store

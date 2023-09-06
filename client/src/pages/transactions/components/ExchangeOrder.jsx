@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card, Form, Select, Table } from "antd";
 import { useEth } from "../../../contexts/EthContext";
-import { hashLength } from "../../../utils/utils";
+import { fromWei, hashLength, toWei } from "../../../utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { loadAllOrders, loadCancelOrders, loadFillOrders } from "../../../redux/slices/orderSlice";
+import dayjs from "dayjs";
 
 const TradeStyleWarp = styled.div`
 
@@ -14,7 +17,8 @@ const TradeStyleWarp = styled.div`
     height: 500px;
     display: flex;
     justify-content: space-between;
-    .orderItem{
+
+    .orderItem {
       width: 32%;
       overflow: hidden;
     }
@@ -23,95 +27,110 @@ const TradeStyleWarp = styled.div`
 `
 
 const ExchangeOrder = () => {
-  const {
-    state: {
-      web3,
-      accounts,
-      contract: { BDTToken, Exchange }
-    },
-    dispatch
-  } = useEth();
+  const dispatch = useDispatch()
+  const { AllOrders, CancelOrders, FillOrders } = useSelector(state => state.order)
+  const { state } = useEth();
   const [currentAcc, setCurrentAcc] = useState('')
   const columnsStyle = {
-    width:'200px',
+    width: '200px',
+    align: 'center'
   }
   const transactions_ing_columns = [
     {
       ...columnsStyle,
+      title: 'id',
+      dataIndex: 'id',
+    },
+    {
+      ...columnsStyle,
       title: 'time',
-      dataIndex: ''
+      dataIndex: 'timestamp',
+      render: text => <>{ dayjs(text * 1000).format('YYYY/MM/DD hh:mm:ss') }</>
     },
     {
       ...columnsStyle,
       title: 'tokenPay',
-      dataIndex: ''
+      dataIndex: 'tokenPay',
+      render: text => <>{ hashLength(text) }</>
     },
     {
       ...columnsStyle,
       title: 'amountPay',
-      dataIndex: ''
+      dataIndex: 'amountPay',
+      render: text => <>{ fromWei(text) }</>
     },
     {
       ...columnsStyle,
       title: 'tokenGet',
-      dataIndex: ''
+      dataIndex: 'tokenGet',
+      render: text => <>{ hashLength(text) }</>
     },
     {
       ...columnsStyle,
       title: 'amountGet',
-      dataIndex: ''
+      dataIndex: 'amountGet',
+      render: text => <>{ fromWei(text) }</>
     }
   ]
+  useEffect(() => {
+    (async () => {
+      dispatch(loadAllOrders(state))
+      dispatch(loadCancelOrders(state))
+      dispatch(loadFillOrders(state))
+    })()
+  }, [state])
   return <TradeStyleWarp>
     <Card>
       <div className="selectAccount">
         <Form>
           <Form.Item label={ '当前账户' } name={ 'account' }>
             <Select
-              options={ accounts?.map(acc => ({ label: hashLength(acc), value: acc })) }
+              options={ state.accounts?.map(acc => ({ label: hashLength(acc), value: acc })) }
               onChange={ setCurrentAcc }
             ></Select>
           </Form.Item>
         </Form>
       </div>
       <div className="orderModel">
-
         <Card
           className="orderItem all"
-          hoverable={true}
-          bordered={true}
-          title={'交易中'}
+          hoverable={ true }
+          bordered={ true }
+          title={ '交易中' }
         >
           <Table
-            dataSource={[]}
-            columns={transactions_ing_columns}
-            scroll={{ x: '100%'}}
+            rowKey="id"
+            dataSource={ AllOrders }
+            columns={ transactions_ing_columns }
+            scroll={ { x: '100%' } }
           />
         </Card>
         <Card
           className="orderItem finish"
-          hoverable={true}
-          bordered={true}
-          title={'已完成交易'}
+          hoverable={ true }
+          bordered={ true }
+          title={ '已完成交易' }
         >
 
           <Table
-            dataSource={[]}
-            columns={transactions_ing_columns}
-            scroll={{ x: '100%', y: '100%'}}
+            rowKey="id"
+            dataSource={ FillOrders }
+            columns={ transactions_ing_columns }
+            scroll={ { x: '100%' } }
           />
         </Card>
         <Card
           className="orderItem mine"
-          hoverable={true}
-          bordered={true}
-          title={'我的订单'}
+          hoverable={ true }
+          bordered={ true }
+          title={ '我的订单' }
         >
 
           <Table
-            dataSource={[]}
-            columns={transactions_ing_columns}
-            scroll={{ x: '100%'}}
+            rowKey="id"
+            dataSource={ CancelOrders }
+            columns={ transactions_ing_columns }
+            scroll={ { x: '100%' } }
           />
         </Card>
       </div>

@@ -113,7 +113,7 @@ module.exports = async function(callback) {
     console.groupEnd()
   }
 
-  // await startTrade()
+  await startTrade()
   const logTrade = async (index, type = 0) => {
     let tradeName = '';
     switch (type) {
@@ -139,13 +139,13 @@ module.exports = async function(callback) {
     console.log(res)
   }
 
-  // await cancelTrade(1)
+  await cancelTrade(1)
 
   async function endTrade(id) {
     await exchange.fillOrder(id, { from: acc1 })
   }
 
-  // await endTrade(3)
+  await endTrade(2)
 
   await logBalance(acc0, 'acc0')
   await logBalance(acc1, 'acc1')
