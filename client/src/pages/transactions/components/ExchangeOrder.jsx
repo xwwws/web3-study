@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import {Button, Card, Form, Select, Table} from "antd";
 import {useEth} from "../../../contexts/EthContext";
@@ -30,6 +30,12 @@ const TradeStyleWarp = styled.div`
 const ExchangeOrder = () => {
   const dispatch = useDispatch()
   const {AllOrders, CancelOrders, FillOrders} = useSelector(state => state.order)
+  const tradeOrders = useMemo(() => {
+    const loseEfficacyOrdersIds = [...CancelOrders, ...FillOrders].map(({id}) => id)
+    return AllOrders.filter(item => {
+      return !loseEfficacyOrdersIds.includes(item.id)
+    })
+  },[AllOrders, CancelOrders, FillOrders])
   const {state} = useEth();
   const [form] = Form.useForm()
   const [currentAcc, setCurrentAcc] = useState('')
@@ -83,12 +89,15 @@ const ExchangeOrder = () => {
     })()
   }, [dispatch, state])
   const handleSubmit = async ({tokenGet,tokenPay,amountGet,amountPay}) => {
-
     const  {web3, contract: {BDTToken, Exchange}, accounts} = state;
     const {account} = await form.validateFields()
-    const s = await Exchange.methods.makeOrder(tokenGet,toWei(amountGet),tokenPay,toWei(amountPay)).send({
+    await Exchange.methods.makeOrder(tokenGet,toWei(amountGet),tokenPay,toWei(amountPay)).send({
       from: account
     })
+    setIsShowModal(false)
+    dispatch(loadAllOrders(state))
+    dispatch(loadCancelOrders(state))
+    dispatch(loadFillOrders(state))
   }
   return <TradeStyleWarp>
     <CreateTransaction
@@ -122,7 +131,7 @@ const ExchangeOrder = () => {
         >
           <Table
             rowKey="id"
-            dataSource={AllOrders}
+            dataSource={tradeOrders}
             columns={transactions_ing_columns}
             scroll={{x: '100%'}}
           />

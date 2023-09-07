@@ -44,7 +44,7 @@ export const loadAllOrders = createAsyncThunk(
 )
 
 export const loadCancelOrders = createAsyncThunk(
-  'order/fetchAllOrders',
+  'order/loadCancelOrders',
   async (data, { dispatch }) => {
     const { contract: { Exchange } } = data
     const orders = await Exchange.getPastEvents('Cancel',{
@@ -59,7 +59,7 @@ export const loadCancelOrders = createAsyncThunk(
 )
 
 export const loadFillOrders = createAsyncThunk(
-  'order/fetchAllOrders',
+  'order/loadFillOrders',
   async (data, { dispatch }) => {
     const { contract: { Exchange } } = data
     const orders = await Exchange.getPastEvents('Trade',{
@@ -72,19 +72,3 @@ export const loadFillOrders = createAsyncThunk(
     })))
   }
 )
-// export const createTransactionOrder = createAsyncThunk(
-//   'order/fetchAllOrders',
-//   async (data, { dispatch }) => {
-//     const { contract: { Exchange } } = data
-//     const orders = await Exchange.getPastEvents('Trade',{
-//       fromBlock: 0,
-//       toBlock: "latest"
-//     })
-//     dispatch(setFillOrders(orders.map(order => {
-//       const {returnValues} = order
-//       return returnValues
-//     })))
-//   }
-// )
-
-

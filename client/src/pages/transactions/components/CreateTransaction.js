@@ -9,6 +9,7 @@ const CreateTransaction = (props) => {
   const {state} = useEth();
   const [tokens, setTokens] = useState()
   const [form] = Form.useForm()
+  const {isOpen,onCancel,onSubmit} = props
   const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     if(state.contract.BDTToken) {
@@ -18,7 +19,9 @@ const CreateTransaction = (props) => {
       ])
     }
   }, [state])
-  const {isOpen,onCancel,onSubmit} = props
+  useEffect(() => {
+    setIsLoading(false)
+  }, [isOpen]);
   const handleSubmit = async () => {
     setIsLoading(true)
     const values = await form.validateFields()
