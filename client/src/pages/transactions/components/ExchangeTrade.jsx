@@ -58,6 +58,7 @@ const ExchangeTrade = () => {
           from: values.account
         })
         break;
+      default:
     }
   }
   return (

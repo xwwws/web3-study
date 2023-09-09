@@ -40,7 +40,7 @@ const Exchange = () => {
       const res = await Exchange?.methods.tokens(ETHER_ADDRESS, accounts[0]).call()
       console.log(Web3.utils.fromWei(res || '0', "ether"))
     })()
-  }, [form, Exchange])
+  }, [form, Exchange,accounts])
   return <>
     <AccountBox>
       <Form form={form}>
