@@ -11,10 +11,9 @@ const AccountBox = styled.div`
   width: 300px;
 `
 const Exchange = () => {
-  const {state: {web3, contract: {BDTToken, Exchange}, accounts}} = useEth();
+  const {state: {contract: {Exchange}, accounts}} = useEth();
   const [form] = Form.useForm()
   const rules = [{required: true, message: '必填'}]
-  const [tokens, SetTokens] = useState('0')
   const handleDeposit = useCallback(async () => {
     const values = await form.validateFields()
     await Exchange.methods.depositEther().send({
