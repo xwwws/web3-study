@@ -1,6 +1,6 @@
 import useEth from "../contexts/EthContext/useEth";
 import {Button, Form, Input, Select} from "antd";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 import styled from "styled-components";
 import Web3 from "web3";
 

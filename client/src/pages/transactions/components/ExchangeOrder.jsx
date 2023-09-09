@@ -110,7 +110,7 @@ const ExchangeOrder = () => {
       title: 'actions',
       dataIndex: 'actions',
       fiexd: true,
-      render: (text, record, index) => {
+      render: (text, record) => {
         return <>
           {record.user !== currentAcc && <Button type={"link"} onClick={() => handleTrade(record)}>交易</Button>}
           {record.user === currentAcc && <Button type={"link"} onClick={() => handleCancelTrade(record)}>取消</Button>}
