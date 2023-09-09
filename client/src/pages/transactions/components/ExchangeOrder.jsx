@@ -86,6 +86,7 @@ const ExchangeOrder = () => {
       dataIndex: 'tokenPay',
       render: text => <>{ hashLength(text) }</>
     },
+
     {
       ...columnsStyle,
       title: 'amountPay',
