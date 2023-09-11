@@ -64,7 +64,8 @@ const ExchangeOrder = () => {
 
   const handleTrade = async (record) => {
     const {contract: {Exchange}} = state;
-    await Exchange.methods.fillOrder(Number(record.id)).send({from: currentAcc})
+    const res = await Exchange.methods.fillOrder(Number(record.id)).send({from: currentAcc})
+    console.log('12', res)
     dispatch(loadFillOrders(state))
     dispatch(loadAllOrders(state))
   }
