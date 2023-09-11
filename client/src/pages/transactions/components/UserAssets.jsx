@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useEth } from "../../../contexts/EthContext";
-import { fromWei } from "../../../utils/utils";
 import styled from "styled-components";
 import { useSelector, useDispatch } from 'react-redux'
 import { loadBalanceData } from "../../../redux/slices/balanceSlice";
@@ -49,7 +48,7 @@ const UserAssets = () => {
       }
     })()
 
-  }, [state]);
+  }, [state,dispatch]);
   return <UserAssetsWarp>
     { accountInfos.map(item => (<UserInfoItemStyle key={ item.userAddress }>
         <div className="infoItem">

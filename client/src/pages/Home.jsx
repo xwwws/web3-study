@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import useEth from "../contexts/EthContext/useEth";
 import { Button, Input } from "antd";
 
@@ -16,11 +16,11 @@ const Home = () => {
     console.log(balance)
   }
   
-  const handleGetStudent = async () => {
+  const handleGetStudent = useCallback(async () => {
     const res = await contract.methods.getPersonList().call()
     console.log(res)
     setpersons(res)
-  }
+  }, [contract])
   
   const handleSetStudent = async () => {
     await contract.methods.setPerson(name,age * 1).send({from : accounts[0]})
@@ -29,7 +29,7 @@ const Home = () => {
   
   useEffect(() => {
     handleGetStudent()
-  }, [])
+  }, [handleGetStudent])
   return <>
     <Input value={name} onChange={e => setName(e.target.value)}></Input>
     <Input value={age} onChange={e => setage(e.target.value)}></Input>

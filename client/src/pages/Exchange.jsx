@@ -1,6 +1,6 @@
 import useEth from "../contexts/EthContext/useEth";
 import {Button, Form, Input, Select} from "antd";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 import styled from "styled-components";
 import Web3 from "web3";
 
@@ -11,10 +11,9 @@ const AccountBox = styled.div`
   width: 300px;
 `
 const Exchange = () => {
-  const {state: {web3, contract: {BDTToken, Exchange}, accounts}} = useEth();
+  const {state: {contract: {Exchange}, accounts}} = useEth();
   const [form] = Form.useForm()
   const rules = [{required: true, message: '必填'}]
-  const [tokens, SetTokens] = useState('0')
   const handleDeposit = useCallback(async () => {
     const values = await form.validateFields()
     await Exchange.methods.depositEther().send({
@@ -40,7 +39,7 @@ const Exchange = () => {
       const res = await Exchange?.methods.tokens(ETHER_ADDRESS, accounts[0]).call()
       console.log(Web3.utils.fromWei(res || '0', "ether"))
     })()
-  }, [form, Exchange])
+  }, [form, Exchange,accounts])
   return <>
     <AccountBox>
       <Form form={form}>

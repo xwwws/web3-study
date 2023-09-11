@@ -22,7 +22,6 @@ const TradeStyleWarp = styled.div`
 const ExchangeTrade = () => {
   const {
     state: {
-      web3,
       accounts,
       contract: { BDTToken, Exchange }
     },
@@ -58,6 +57,7 @@ const ExchangeTrade = () => {
           from: values.account
         })
         break;
+      default:
     }
   }
   return (
