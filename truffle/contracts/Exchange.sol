@@ -196,7 +196,7 @@ contract Exchange {
             tokens[curOrder.tokenGet][msg.sender] -
             curOrder.amountGet;
 
-        payGas(curOrder.amountGet,msg.sender,fee);
+        payGas(curOrder.tokenGet,msg.sender,fee);
 
         emit Trade(
             curOrder.id,
