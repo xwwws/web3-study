@@ -3,13 +3,18 @@ import { Button, Card, Form, Input, message, Select } from "antd";
 import styled from "styled-components";
 import { useEth } from "../../../contexts/EthContext";
 import { hashLength, toWei } from "../../../utils/utils";
+import { useDispatch } from "react-redux";
+import { loadBalanceData } from "../../../redux/slices/balanceSlice";
+import { Transaction as Tx } from 'ethereumjs-tx'
+import Web3 from "web3";
 
 const transactions = [
-  { value: '01', label: '充值ETH' },
-  { value: '02', label: '充值BDT' },
+  { value: '01', label: '划转ETH' },
+  { value: '02', label: '划转BDT' },
   { value: '03', label: '提现ETH' },
   { value: '04', label: '提现BDT' },
   { value: '05', label: '转账BDT' },
+  { value: '06', label: '转账ETH' },
 ]
 const TradeStyleWarp = styled.div`
   margin-top: 20px;
@@ -20,14 +25,33 @@ const TradeStyleWarp = styled.div`
   }
 `
 const ExchangeTrade = () => {
+  const dispatch = useDispatch()
   const {
     state: {
+      web3,
       accounts,
       contract: { BDTToken, Exchange }
     },
   } = useEth()
+  const { state } = useEth()
   const [form] = Form.useForm()
   const rules = [{ required: true, message: '必填' }]
+  const transferETH = async (from, to, amount) => {
+    const privateKey = Buffer.from('', "hex");
+    const amountToSend = toWei(amount);
+    const gas = toWei('', 'gwei');
+    const gasLimit = '';
+    const nonce = web3.eth.getTransactionCount(from);
+    const txObj = {
+      nonce: web3.utils.toHex(nonce),
+      gasPrice: web3.utils.toHex(gas),
+      gasLimit: web3.utils.toHex(gasLimit),
+      to,
+      value: web3.utils.toHex(amountToSend),
+    }
+    const tx = new Tx(txObj,{})
+
+  }
   const handleRun = async () => {
     const values = await form.validateFields()
     switch (values.type) {
@@ -57,8 +81,12 @@ const ExchangeTrade = () => {
           from: values.account
         })
         break;
+      case '06':
+        await transferETH(values.account, values.accountTo, values.amount)
+        break;
       default:
     }
+    dispatch(loadBalanceData(state))
   }
   return (
     <TradeStyleWarp>
@@ -110,5 +138,4 @@ const ExchangeTrade = () => {
     </TradeStyleWarp>
   );
 }
-
 export default ExchangeTrade;
