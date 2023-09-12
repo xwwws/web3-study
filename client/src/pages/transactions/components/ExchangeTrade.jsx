@@ -6,6 +6,7 @@ import { hashLength, toWei } from "../../../utils/utils";
 import { useDispatch } from "react-redux";
 import { loadBalanceData } from "../../../redux/slices/balanceSlice";
 import { Transaction as Tx } from 'ethereumjs-tx'
+import Buffer from 'buffer'
 import Web3 from "web3";
 
 const transactions = [
@@ -37,7 +38,7 @@ const ExchangeTrade = () => {
   const [form] = Form.useForm()
   const rules = [{ required: true, message: '必填' }]
   const transferETH = async (from, to, amount) => {
-    const privateKey = Buffer.from('', "hex");
+    const privateKey = Buffer.from('',"hex")
     const amountToSend = toWei(amount);
     const gas = toWei('', 'gwei');
     const gasLimit = '';
