@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {loadAllOrders, loadCancelOrders, loadFillOrders} from "../../../redux/slices/orderSlice";
 import dayjs from "dayjs";
 import CreateTransaction from "./CreateTransaction";
+import { loadBalanceData } from "../../../redux/slices/balanceSlice";
 
 const TradeStyleWarp = styled.div`
 
@@ -67,6 +68,7 @@ const ExchangeOrder = () => {
     await Exchange.methods.fillOrder(Number(record.id)).send({from: currentAcc})
     dispatch(loadFillOrders(state))
     dispatch(loadAllOrders(state))
+    dispatch(loadBalanceData(state))
   }
   const transactions_ing_columns = [
     {
