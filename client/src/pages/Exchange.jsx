@@ -18,6 +18,7 @@ const Exchange = () => {
     const values = await form.validateFields()
     await Exchange.methods.depositEther().send({
       from: values.from,
+
       value: Web3.utils.toWei(values.count.toString(), "ether")
     })
   }, [form, Exchange])
