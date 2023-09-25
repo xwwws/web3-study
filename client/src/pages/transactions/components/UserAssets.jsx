@@ -38,7 +38,7 @@ const UserInfoItemStyle = styled.div`
   }
 `
 const UserAssets = () => {
-  console.log(1)
+  console.log(2)
   const { state } = useEth()
   const accountInfos = useSelector(state => state.balance.accountsAsset)
   const dispatch = useDispatch()
