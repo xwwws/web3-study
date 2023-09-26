@@ -9,7 +9,6 @@ contract Exchange {
 
     uint256 public feePercent;
 
-
     address constant ETHER = address(0);
 
     mapping(address => mapping(address => uint256)) public tokens;
